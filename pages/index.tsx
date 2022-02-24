@@ -37,9 +37,6 @@ export default function Index({ posts }: { posts: post[] }) {
         </nav>
       </header>
       <main className="mt-10 mb-16">
-        <div className="flex items-center opacity-20">
-          <span className="w-full border-b-2 border-gray-600" />
-        </div>
         <ul className="mt-8">
           {posts.map((post, index) => (
             <li key={post.filePath} className="py-4">
