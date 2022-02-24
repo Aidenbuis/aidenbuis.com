@@ -37,11 +37,16 @@ export default function PostPage({ source, frontMatter }: PostPageProps) {
       <header>
         <nav className="flex items-center justify-between">
           <Link href="/">
-            <a className="flex items-center text-gray-800 font-merriweather">
+            <a className="flex items-center text-gray-500 transition-colors duration-150 ease-in font-merriweather hover:text-gray-800">
               <ArrowNarrowLeftIcon className="inline w-4 h-4 mr-2" /> Go back
             </a>
           </Link>
-          <Image src="/logo.svg" alt="logo" height={75} width={75} />
+          <div
+            className="flex items-center justify-center rounded-full shadow-md"
+            style={{ height: "85px", width: "85px" }}
+          >
+            <Image src="/logo.svg" alt="logo" height={75} width={75} />
+          </div>
         </nav>
       </header>
       <div className="mt-16">

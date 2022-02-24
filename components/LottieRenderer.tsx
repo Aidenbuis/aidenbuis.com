@@ -6,12 +6,14 @@ interface LottieRendererProps {
   data?: {};
   property?: keyof typeof LottieData;
   className?: string;
+  padding?: string;
 }
 
 const LottieRenderer = ({
   data,
   property,
   className = "",
+  padding = "",
 }: LottieRendererProps) => {
   const containerEl = useRef(null);
 
@@ -29,7 +31,7 @@ const LottieRenderer = ({
     });
   }, [containerEl, data, property]);
 
-  return <div className={className} ref={containerEl} />;
+  return <div className={`${padding} ${className}`} ref={containerEl} />;
 };
 
 export default LottieRenderer;
