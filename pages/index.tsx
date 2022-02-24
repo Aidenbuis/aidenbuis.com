@@ -79,7 +79,7 @@ const SideBorder = () => (
 
 const SideA = ({ data = {} }) => (
   <div className="w-1/2 pr-8">
-    <LottieRenderer padding="m-16" data={data} />
+    <LottieRenderer padding="m-12" data={data} />
   </div>
 );
 
