@@ -16,6 +16,7 @@ interface post {
   data: {
     title: string;
     lottieData: keyof typeof lottieData;
+    published: boolean;
   };
   filePath: string;
 }
@@ -37,33 +38,35 @@ export default function Index({ posts }: { posts: post[] }) {
         </nav>
       </header>
       <main className="mt-10 mb-16">
-        <ul className="mt-8">
-          {posts.map((post, index) => (
-            <li key={post.filePath} className="py-4">
-              <Link
-                as={`/posts/${post.filePath.replace(/\.mdx?$/, "")}`}
-                href={`/posts/[slug]`}
-              >
-                <a className="block p-8 mt-4 text-2xl font-semibold text-gray-800 transition-colors duration-200 ease-in bg-gray-100 rounded-2xl group hover:bg-gray-200 hover:bg-opacity-30">
-                  <div className="flex">
-                    {index % 2 === 0 ? (
-                      <div className="flex items-center">
-                        <SideA data={LottieData[post.data.lottieData]} />
-                        <SideBorder />
-                        <SideB title={post.data.title} />
-                      </div>
-                    ) : (
-                      <div className="flex items-center">
-                        <SideB title={post.data.title} />
-                        <SideBorder />
-                        <SideA data={LottieData[post.data.lottieData]} />
-                      </div>
-                    )}
-                  </div>
-                </a>
-              </Link>
-            </li>
-          ))}
+        <ul className="mt-10">
+          {posts
+            .filter((post) => post.data.published === true)
+            .map((post, index) => (
+              <li key={post.filePath} className="py-4">
+                <Link
+                  as={`/posts/${post.filePath.replace(/\.mdx?$/, "")}`}
+                  href={`/posts/[slug]`}
+                >
+                  <a className="block p-8 mt-4 text-2xl font-semibold text-gray-800 transition-colors duration-200 ease-in bg-gray-100 rounded-2xl group hover:bg-gray-200 hover:bg-opacity-30">
+                    <div className="flex">
+                      {index % 2 === 0 ? (
+                        <div className="flex items-center">
+                          <SideA data={LottieData[post.data.lottieData]} />
+                          <SideBorder />
+                          <SideB title={post.data.title} />
+                        </div>
+                      ) : (
+                        <div className="flex items-center">
+                          <SideB title={post.data.title} />
+                          <SideBorder />
+                          <SideA data={LottieData[post.data.lottieData]} />
+                        </div>
+                      )}
+                    </div>
+                  </a>
+                </Link>
+              </li>
+            ))}
         </ul>
       </main>
     </Layout>

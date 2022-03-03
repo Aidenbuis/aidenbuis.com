@@ -26,16 +26,25 @@ h2 {
   font-family: "Merriweather", sans-serif;
 }
 
-.article-content p {
+.article-content > p {
   margin-bottom: 1rem;
 }
 
-.article-content ul {
+.article-content > ul {
   list-style: disc;
   padding-left: 1rem;
   margin-bottom: 1rem;
 }
 
-.article-content li {
+.article-content > ul li {
   margin-bottom: 0.25rem;
+}
+
+::selection {
+  background: #ea580d; /* WebKit/Blink Browsers */
+  color: white;
+}
+::-moz-selection {
+  background: #ea580d; /* Gecko Browsers */
+  color: white;
 }

@@ -1,8 +1,10 @@
 import { FC } from "react";
+import { Toaster } from "react-hot-toast";
 
 const Layout: FC = ({ children }) => {
   return (
     <div className="bg-gray-100">
+      <Toaster />
       <div className="container max-w-3xl mx-auto">
         <div className="mt-10">{children}</div>
       </div>

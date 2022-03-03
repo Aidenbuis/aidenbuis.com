@@ -10,9 +10,11 @@ import Head from "next/head";
 import Link from "next/link";
 import path from "path";
 import CustomLink from "@/components/CustomLink";
+import InnerWorkingsTerminal from "@/components/InnerWorkingsTerminal";
 import CustomCode from "@/components/CustomCode";
 import Layout from "@/components/Layout";
 import LottieRenderer from "@/components/LottieRenderer";
+import InnerWorkingsDirectory from "@/components/InnerWorkingsDirectory";
 import { postFilePaths, POSTS_PATH } from "@/utils/mdxUtils";
 
 const components = {
@@ -21,6 +23,8 @@ const components = {
   TestComponent: dynamic(() => import("@/components/TestComponent")),
   Head,
   LottieRenderer,
+  InnerWorkingsTerminal,
+  InnerWorkingsDirectory,
 };
 
 interface PostPageProps {
@@ -57,9 +61,10 @@ export default function PostPage({ source, frontMatter }: PostPageProps) {
             {frontMatter.description}
           </p>
         )}
+        <span className="block w-full border-b border-gray-300 my-14" />
       </div>
 
-      <main className="mt-24 mb-16 text-gray-600 article-content">
+      <main className="relative mb-16 text-gray-700 article-content">
         <MDXRemote {...source} components={components as any} />
       </main>
     </Layout>

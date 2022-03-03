@@ -1,10 +1,18 @@
 ---
-title: What happens when you run git init
-description: A deep dive into the magic inner workings of Git
+title: The inner workings of Git
+description: A deep dive into the magic that powers Git
 lottieData: git_init
+last_updated: 03/02/2022
+published: true
 ---
 
-The command where it all starts: `git init`. When you run this command it creates a `.git` repository where pretty much everything Git needs is stored. In this section we will dive into what is contained in the `.git` folder.
+<InnerWorkingsDirectory />
+
+In this deep dive we will learn how Git works behind the curtain. We will look into how Git keeps track of changes. The aim is that we finish with a concise mental model.
+
+Let's start with the command to give birth to a new repository: `git init`.
+
+<InnerWorkingsTerminal />
 
 First start by running `git init` in the terminal. After you’ve done that you will see a new `.git` folder pop up in the directory. Inside that folder are the following folders and files. Let’s take a look at each one.
 
@@ -15,6 +23,7 @@ First start by running `git init` in the terminal. After you’ve done that you 
 - config
 - description
 - HEAD
+- index
 
 The `hooks/` folder contains your client- or server side hook scripts. An example of this is a pre-commit hook, that runs a check before it lets you commit.
 
