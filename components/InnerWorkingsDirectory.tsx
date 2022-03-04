@@ -1,9 +1,31 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, FC } from "react";
 import { useWindowSize } from "react-use";
-import { FolderIcon, FolderOpenIcon } from "@heroicons/react/outline";
-import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/solid";
+import {
+  ChevronRightIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@heroicons/react/solid";
 import { AnimatePresence, motion } from "framer-motion";
-import { Item } from "framer-motion/types/components/Reorder/Item";
+
+import { placeContentToTheRight } from "@/utils/articleUtils";
+
+const directory = [
+  {
+    name: ".git",
+    open: true,
+    type: "folder",
+    content: [
+      { name: "hooks", type: "folder", content: [] },
+      { name: "info", type: "folder", content: [] },
+      { name: "objects", type: "folder", content: [] },
+      { name: "refs", type: "folder", content: [] },
+      { name: "config", type: "file", content: null },
+      { name: "description", type: "file", content: null },
+      { name: "HEAD", type: "file", content: null },
+      { name: "index", type: "file", content: null },
+    ],
+  },
+];
 
 const InnerWorkingsDirectory = () => {
   const [initialized, setInitialized] = useState(false);
@@ -24,15 +46,29 @@ const InnerWorkingsDirectory = () => {
 
   // Initialize styles
   useEffect(() => {
-    if (!containerEl.current) return;
+    window.setTimeout(() => {
+      if (!containerEl.current) return;
+      const containerWidth = containerEl.current.offsetWidth;
+      // Get marginLeft containerEl
+      const containerMarginLeft = parseInt(
+        getComputedStyle(containerEl.current).marginLeft
+      );
 
-    const containerWidth = containerEl.current.offsetWidth;
-    const containerOffsetLeft = containerEl.current.offsetLeft;
+      const windowWidth = windowSize.width;
+      const whitespace = windowWidth - containerWidth;
+      const marginRight = whitespace / 4;
+      const articleContainerLeft = whitespace / 2 - marginRight;
 
-    setDirectoryStyles({
-      width: containerOffsetLeft,
-      left: containerWidth + containerOffsetLeft,
-    });
+      const containerOffsetLeft = containerEl.current.offsetLeft;
+      console.log(
+        "Directory width",
+        articleContainerLeft + containerMarginLeft
+      );
+      setDirectoryStyles({
+        width: articleContainerLeft + containerMarginLeft,
+        left: containerWidth + containerOffsetLeft,
+      });
+    }, 400); // 150 ms timeout
   }, [initialized, windowSize.width]);
 
   const handleCommandEvent = (e: CustomEventInit<string>) => {
@@ -41,8 +77,10 @@ const InnerWorkingsDirectory = () => {
       return;
     } else if (command === "git init") {
       setInitialized(true);
+      placeContentToTheRight("init");
     } else if (command === "reset git init") {
       setInitialized(false);
+      placeContentToTheRight("reset");
     }
   };
 
@@ -50,96 +88,97 @@ const InnerWorkingsDirectory = () => {
     <div className="fixed top-0 left-0 w-full pointer-events-none">
       <div
         ref={containerEl}
-        className="container flex items-center h-screen max-w-3xl mx-auto mt-10"
+        className="container h-screen max-w-3xl mx-auto mt-10"
       >
-        <Directory
-          isOpen={isOpen}
-          initialized={initialized}
-          directoryStyles={directoryStyles}
-        />
-        <ToggleDirectoryButton
-          directoryStyles={directoryStyles}
-          initialized={initialized}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-        />
+        {initialized && (
+          <motion.div
+            initial={{ opacity: 0, left: -40 }}
+            animate={{ opacity: 1, left: 0 }}
+            exit={{ opacity: 0, left: -40 }}
+            style={{
+              width: directoryStyles.width,
+              left: "0px",
+            }}
+            className="fixed top-0 left-0 flex flex-row items-start justify-end h-screen mt-16 md:8 md:10 lg:px-16"
+          >
+            <div className="w-full overflow-hidden bg-gray-100 border border-gray-300 rounded-md shadow-lg pointer-events-auto">
+              <div
+                className={`${
+                  isOpen ? "border-b" : ""
+                } flex items-center justify-between px-5 py-2 transition-colors duration-150 ease-in bg-gray-200 cursor-pointer select-none hover:bg-gray-300`}
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                <span className="font-bold">Directory</span>
+                {isOpen ? (
+                  <ChevronDownIcon className="inline-block w-6 h-6" />
+                ) : (
+                  <ChevronUpIcon className="inline-block w-6 h-6" />
+                )}
+              </div>
+              {isOpen && <FoldersAndFiles items={directory} />}
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   );
 };
 
-interface DirectoryProps {
-  isOpen: boolean;
-  initialized: boolean;
-  directoryStyles: {
-    left: number;
-    width: number;
-  };
+interface FileProps {
+  name: string;
+  type: "file";
+  content: null;
+}
+interface FolderProps {
+  name: string;
+  open: boolean;
+  type: "folder";
+  content: FileProps[] | FolderProps[];
 }
 
-const Directory = ({
-  isOpen,
-  initialized,
-  directoryStyles,
-}: DirectoryProps) => {
-  const directory = [
-    { name: "hooks", content: [] },
-    { name: "info", content: [] },
-    { name: "objects", content: [] },
-    { name: "refs", content: [] },
-    "config",
-    "description",
-    "HEAD",
-    "index",
-  ];
+interface FoldersAndFilesProps {
+  items: FolderProps[] | FileProps[];
+}
 
-  return (
-    <AnimatePresence>
-      {isOpen && initialized && (
-        <motion.div
-          initial={{ opacity: 0, left: -25 }}
-          animate={{ opacity: 1, left: 0 }}
-          exit={{ opacity: 0, left: -25 }}
-          style={{
-            width: directoryStyles.width,
-            left: "0px",
-          }}
-          className="fixed top-0 left-0 flex items-center justify-center h-screen px-10"
-        >
-          <div className="w-full bg-gray-100 border border-gray-300 rounded-md shadow-lg pointer-events-auto">
-            <div className="px-5 py-2 bg-gray-200 border-b">
-              <span className="font-bold">Directory</span>
-            </div>
-            <ul className="px-3 py-2 list-none">
-              {directory.map((item) => {
-                const isFile = typeof item === "string";
-                if (isFile) {
-                  return <li className="pl-4 mt-1">{item}</li>;
-                } else {
-                  return <FolderItem item={item} />;
-                }
-                return <span key="item">Joe</span>;
-              })}
-            </ul>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-};
+const FoldersAndFiles = ({ items }: FoldersAndFilesProps) => (
+  <ul className="px-3 py-2 list-none opacity-100">
+    {items.map((item) => {
+      if (item.type === "file") {
+        return (
+          <li key={item.name} className="pl-4 mt-1">
+            {item.name}
+          </li>
+        );
+      } else if (item.type === "folder" && item.content > 0) {
+        return (
+          <FolderItem item={item}>
+            <FoldersAndFiles items={item.content} />
+          </FolderItem>
+        );
+      } else if (item.type === "folder" && item.content === 0) {
+        <li className="pl-4 mt-1 italic text-gray-500">No files</li>;
+      }
+    })}
+  </ul>
+);
 
 interface FolderItemProps {
   item: {
     name: string;
-    content: never[];
+    content: any[];
+    type: string;
+    open?: boolean;
   };
 }
 
-const FolderItem = ({ item }: FolderItemProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+const FolderItem: FC<FolderItemProps> = ({ item, children }) => {
+  const [isOpen, setIsOpen] = useState(item.open ? item.open : false);
   return (
     <>
-      <li className="mt-1 cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+      <li
+        className="mt-1 cursor-pointer select-none"
+        onClick={() => setIsOpen(!isOpen)}
+      >
         {isOpen ? (
           <ChevronDownIcon className="inline-block w-4 h-4" />
         ) : (
@@ -147,63 +186,8 @@ const FolderItem = ({ item }: FolderItemProps) => {
         )}
         {item.name}
       </li>
-      {isOpen && item.content.length > 0 ? (
-        <ul className="pl-4">
-          {item.content.map((subItem: string) => (
-            <li key={subItem}>{subItem}</li>
-          ))}
-        </ul>
-      ) : isOpen && item.content.length === 0 ? (
-        <li className="pl-5">
-          <span className="text-sm italic text-gray-500">No items</span>
-        </li>
-      ) : null}
+      {children}
     </>
-  );
-};
-
-interface ToggleDirectoryButtonProps {
-  directoryStyles: {
-    left: number;
-    width: number;
-  };
-  initialized: boolean;
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-}
-
-const ToggleDirectoryButton = ({
-  directoryStyles,
-  initialized,
-  isOpen,
-  setIsOpen,
-}: ToggleDirectoryButtonProps) => {
-  return (
-    <AnimatePresence>
-      {initialized && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.5 }}
-          className="fixed top-0 right-0 flex items-center justify-center h-screen"
-          style={{
-            left: `${directoryStyles.left}px`,
-            width: `${directoryStyles.width}px`,
-          }}
-        >
-          <div
-            className="flex items-center justify-center w-16 h-16 p-1 ml-4 text-gray-800 transition duration-150 ease-in bg-gray-100 border border-gray-300 rounded-full shadow-md cursor-pointer pointer-events-auto select-none hover:text-gray-900"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? (
-              <FolderOpenIcon className="w-6 h-6" />
-            ) : (
-              <FolderIcon className="w-6 h-6" />
-            )}
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
   );
 };
 

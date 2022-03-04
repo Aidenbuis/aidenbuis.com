@@ -4,8 +4,23 @@ import { Toaster } from "react-hot-toast";
 const Layout: FC = ({ children }) => {
   return (
     <div className="bg-gray-100">
-      <Toaster />
-      <div className="container max-w-3xl mx-auto">
+      <Toaster
+        toastOptions={{
+          style: {
+            background: "#f3f4f6",
+            margin: "2rem",
+          },
+        }}
+        position="bottom-left"
+      />
+      <div
+        id="page-container"
+        style={{
+          transition: "left 150ms",
+          left: "0px",
+        }}
+        className="container relative max-w-3xl mx-auto transition duration-150 ease-in"
+      >
         <div className="mt-10">{children}</div>
       </div>
       <div className="flex items-center justify-center w-full py-10 mt-12 text-gray-600">

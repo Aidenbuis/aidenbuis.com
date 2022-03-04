@@ -8,22 +8,15 @@ published: true
 
 <InnerWorkingsDirectory />
 
-In this deep dive we will learn how Git works behind the curtain. We will look into how Git keeps track of changes. The aim is that we finish with a concise mental model.
+Git can be quite intimidating. Maybe you recognize this scenario... 10+ Stack Overflow tabs open. Running Git commands without knowing what they do. Hoping that they fix the problem. I've been there. I used to just remember the common used commands. But how Git really worked? I had no clue.
 
-Let's start with the command to give birth to a new repository: `git init`.
+This series of articles on Git dives into the inner workings of Git. Together we will look what happens under the hood of Git. The aim is to build a concise mental model on Git.
+
+Let's start with the command `git init` to give birth to a new repository.
 
 <InnerWorkingsTerminal />
 
-First start by running `git init` in the terminal. After you’ve done that you will see a new `.git` folder pop up in the directory. Inside that folder are the following folders and files. Let’s take a look at each one.
-
-- hooks/
-- info/
-- objects/
-- refs/
-- config
-- description
-- HEAD
-- index
+After you’ve done that you will see a new `.git` folder pop up in the directory. Inside that folder are the following folders and files. Let’s take a look at each one.
 
 The `hooks/` folder contains your client- or server side hook scripts. An example of this is a pre-commit hook, that runs a check before it lets you commit.
 

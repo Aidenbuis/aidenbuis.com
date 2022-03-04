@@ -23,7 +23,7 @@ const InnerWorkingsTerminal = () => {
         })
       );
       setCmdExecuted(true);
-      toast("✨ A git repository was born");
+      toast("✨ Git initialized");
     } else if (terminalInput === "Git init") {
       toast("Oops, the G should be lowercase");
     } else {

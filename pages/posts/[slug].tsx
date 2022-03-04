@@ -57,7 +57,7 @@ export default function PostPage({ source, frontMatter }: PostPageProps) {
         <h1 className="text-gray-800">{frontMatter.title}</h1>
         <span className="block w-10 h-2 mt-6 bg-orange-600" />
         {frontMatter.description && (
-          <p className="mt-5 text-lg text-gray-600">
+          <p className="mt-5 text-lg italic text-gray-700">
             {frontMatter.description}
           </p>
         )}
