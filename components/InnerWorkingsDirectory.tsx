@@ -5,27 +5,13 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@heroicons/react/solid";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
+import innerWorkingsDirectoryData, {
+  FolderProps,
+  FilePropsOrFolderProps,
+} from "@/constants/innerWorkingsDirectoryData";
 import { placeContentToTheRight } from "@/utils/articleUtils";
-
-const directory = [
-  {
-    name: ".git",
-    open: true,
-    type: "folder",
-    content: [
-      { name: "hooks", type: "folder", content: [] },
-      { name: "info", type: "folder", content: [] },
-      { name: "objects", type: "folder", content: [] },
-      { name: "refs", type: "folder", content: [] },
-      { name: "config", type: "file", content: null },
-      { name: "description", type: "file", content: null },
-      { name: "HEAD", type: "file", content: null },
-      { name: "index", type: "file", content: null },
-    ],
-  },
-];
 
 const InnerWorkingsDirectory = () => {
   const [initialized, setInitialized] = useState(false);
@@ -58,12 +44,8 @@ const InnerWorkingsDirectory = () => {
       const whitespace = windowWidth - containerWidth;
       const marginRight = whitespace / 4;
       const articleContainerLeft = whitespace / 2 - marginRight;
-
       const containerOffsetLeft = containerEl.current.offsetLeft;
-      console.log(
-        "Directory width",
-        articleContainerLeft + containerMarginLeft
-      );
+
       setDirectoryStyles({
         width: articleContainerLeft + containerMarginLeft,
         left: containerWidth + containerOffsetLeft,
@@ -115,7 +97,7 @@ const InnerWorkingsDirectory = () => {
                   <ChevronUpIcon className="inline-block w-6 h-6" />
                 )}
               </div>
-              {isOpen && <FoldersAndFiles items={directory} />}
+              {isOpen && <FoldersAndFiles items={innerWorkingsDirectoryData} />}
             </div>
           </motion.div>
         )}
@@ -124,51 +106,44 @@ const InnerWorkingsDirectory = () => {
   );
 };
 
-interface FileProps {
-  name: string;
-  type: "file";
-  content: null;
-}
-interface FolderProps {
-  name: string;
-  open: boolean;
-  type: "folder";
-  content: FileProps[] | FolderProps[];
-}
-
 interface FoldersAndFilesProps {
-  items: FolderProps[] | FileProps[];
+  items: FilePropsOrFolderProps[] | null;
 }
 
-const FoldersAndFiles = ({ items }: FoldersAndFilesProps) => (
-  <ul className="px-3 py-2 list-none opacity-100">
-    {items.map((item) => {
-      if (item.type === "file") {
-        return (
-          <li key={item.name} className="pl-4 mt-1">
-            {item.name}
-          </li>
-        );
-      } else if (item.type === "folder" && item.content > 0) {
-        return (
-          <FolderItem item={item}>
-            <FoldersAndFiles items={item.content} />
-          </FolderItem>
-        );
-      } else if (item.type === "folder" && item.content === 0) {
-        <li className="pl-4 mt-1 italic text-gray-500">No files</li>;
-      }
-    })}
-  </ul>
-);
+const FoldersAndFiles = ({ items }: FoldersAndFilesProps) => {
+  if (!items) return null;
+  return (
+    <ul className="px-3 py-2 list-none opacity-100">
+      {items.map((item) => {
+        console.log(item, item.type, item.content.length);
+        if (item.type === "file") {
+          return (
+            <li key={item.name} className="pl-4 mt-1">
+              {item.name}
+            </li>
+          );
+        } else if (item.type === "folder" && item.content.length > 0) {
+          return (
+            <FolderItem item={item}>
+              <FoldersAndFiles items={item.content} />
+            </FolderItem>
+          );
+        } else if (item.type === "folder" && item.content.length === 0) {
+          return (
+            <FolderItem item={item}>
+              <ul>
+                <li className="pl-4 mt-1 italic text-gray-500">No files</li>
+              </ul>
+            </FolderItem>
+          );
+        }
+      })}
+    </ul>
+  );
+};
 
 interface FolderItemProps {
-  item: {
-    name: string;
-    content: any[];
-    type: string;
-    open?: boolean;
-  };
+  item: FolderProps;
 }
 
 const FolderItem: FC<FolderItemProps> = ({ item, children }) => {
@@ -186,7 +161,7 @@ const FolderItem: FC<FolderItemProps> = ({ item, children }) => {
         )}
         {item.name}
       </li>
-      {children}
+      {isOpen && children}
     </>
   );
 };
