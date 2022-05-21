@@ -11,8 +11,11 @@ import Link from "next/link";
 import path from "path";
 import CustomLink from "@/components/CustomLink";
 import InnerWorkingsTerminal from "@/components/InnerWorkingsTerminal";
+import InnerWorkingsCreateFile from "@/components/InnerWorkingsCreateFile";
+import Divider from "@/components/Divider";
 import CustomCode from "@/components/CustomCode";
 import Layout from "@/components/Layout";
+import SectionContainer from "@/components/SectionContainer";
 import LottieRenderer from "@/components/LottieRenderer";
 import InnerWorkingsDirectory from "@/components/InnerWorkingsDirectory";
 import { postFilePaths, POSTS_PATH } from "@/utils/mdxUtils";
@@ -25,6 +28,9 @@ const components = {
   LottieRenderer,
   InnerWorkingsTerminal,
   InnerWorkingsDirectory,
+  InnerWorkingsCreateFile,
+  Divider,
+  SectionContainer,
 };
 
 interface PostPageProps {

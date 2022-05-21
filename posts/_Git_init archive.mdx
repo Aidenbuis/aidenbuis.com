@@ -1,0 +1,24 @@
+# outline
+
+- initialize git with `git init`
+- add a file in the repository with `touch text.txt`
+- run `git status`
+- add a file into the staging repository `git add text.txt`
+
+# archived text
+
+The `hooks/` folder contains your client- or server side hook scripts. An example of this is a pre-commit hook, that runs a check before it lets you commit.
+
+The `info/` folder contains a file called `exclude`. This file is similar to `.gitignore` which you are probably familiar with. The difference between the two is that `.gitignore` is committed to the repository, whereas the `info/exclude` file is not. You can use the `info/exclude` file if you have files that live inside the repository but are specific to your workflow, and don’t have function for other users. I personally have never had the need to use it.
+
+The `objects/` folder is where the magic happens. In it Git stores every change to the repository. A big part of this section will focus on how Git does this.
+
+The `refs/` folder stores pointers into commit objects in that data (branches, tags, remotes and more).
+
+The `config` file contains your project-specific configuration options
+
+The `description` file is only used by GitWeb, a web interface for Git. It comes automatically with Git. You can ignore this file.
+
+The `HEAD` file points to the branch you currently have checked out.
+
+The `index` file stores information about your staging area.

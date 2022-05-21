@@ -7,6 +7,9 @@ interface LottieRendererProps {
   property?: keyof typeof LottieData;
   className?: string;
   padding?: string;
+  options: {
+    [key: string]: any;
+  };
 }
 
 const LottieRenderer = ({
@@ -14,6 +17,7 @@ const LottieRenderer = ({
   property,
   className = "",
   padding = "",
+  options = {},
 }: LottieRendererProps) => {
   const containerEl = useRef(null);
 
@@ -28,6 +32,7 @@ const LottieRenderer = ({
       loop: true,
       autoplay: true,
       animationData: animationData, // the animation data
+      ...options,
     });
   }, [containerEl, data, property]);
 

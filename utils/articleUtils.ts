@@ -13,4 +13,11 @@ const placeContentToTheRight = (type: "init" | "reset" | "update") => {
   }
 };
 
-export { placeContentToTheRight };
+const displaySection = (id: number) => {
+  const section = document.getElementById(`section-${id}`);
+  if (!section) return;
+  // remove hidden class
+  section.classList.remove("hidden");
+};
+
+export { placeContentToTheRight, displaySection };

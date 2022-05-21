@@ -26,7 +26,8 @@ h2 {
   font-family: "Merriweather", sans-serif;
 }
 
-.article-content > p {
+.article-content > p,
+.section-container > p {
   margin-bottom: 1rem;
 }
 
