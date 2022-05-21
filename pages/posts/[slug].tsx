@@ -16,6 +16,7 @@ import Divider from "@/components/Divider";
 import CustomCode from "@/components/CustomCode";
 import Layout from "@/components/Layout";
 import SectionContainer from "@/components/SectionContainer";
+import Badge from "@/components/Badge";
 import LottieRenderer from "@/components/LottieRenderer";
 import InnerWorkingsDirectory from "@/components/InnerWorkingsDirectory";
 import { postFilePaths, POSTS_PATH } from "@/utils/mdxUtils";
@@ -26,6 +27,7 @@ const components = {
   TestComponent: dynamic(() => import("@/components/TestComponent")),
   Head,
   LottieRenderer,
+  Badge,
   InnerWorkingsTerminal,
   InnerWorkingsDirectory,
   InnerWorkingsCreateFile,

@@ -32,6 +32,7 @@ const LottieRenderer = ({
       loop: true,
       autoplay: true,
       animationData: animationData, // the animation data
+      assetsPath: "data/images/",
       ...options,
     });
   }, [containerEl, data, property]);
